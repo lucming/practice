@@ -52,6 +52,22 @@ func insertSort1(arr []int) {
 	}
 }
 
+//希尔排序，带增量的插入排序
+func shellSort(arr []int) {
+	lenArr := len(arr)
+	for step := lenArr / 2; step >= 1; step /= 2 {
+		for i := step; i < lenArr; i += step {
+			for j := i - step; j >= 0; j -= step {
+				if arr[j+step] < arr[j] {
+					arr[j], arr[j+step] = arr[j+step], arr[j]
+					continue
+				}
+				break
+			}
+		}
+	}
+}
+
 func merge(arr1, arr2 []int) []int {
 	ret := []int{}
 	i, j := 0, 0
@@ -88,25 +104,24 @@ func meregeSort(arr []int) []int {
 	return merge(arr1, arr2)
 }
 
-func quickSort(arr []int,start int,end int){
+func quickSort(arr []int, start int, end int) {
 	if start < end {
 		i, j := start, end
 		tmp := arr[i]
 
 		for i < j {
-			for i < j && tmp<arr[j] {
+			for i < j && tmp < arr[j] {
 				j--
 			}
 			arr[i] = arr[j]
 
-			for j < j && tmp>=arr[i] {
+			for i < j && tmp >= arr[i] {
 				i++
 			}
 			arr[j] = arr[i]
 		}
-		arr[i]=tmp
+		arr[i] = tmp
 		quickSort(arr, start, i-1)
 		quickSort(arr, i+1, end)
 	}
 }
-
