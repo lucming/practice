@@ -1,6 +1,8 @@
-package lc
+package search
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_duplicate(t *testing.T) {
 	type args struct {
