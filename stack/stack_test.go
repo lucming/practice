@@ -2,6 +2,7 @@ package stack
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -39,6 +40,110 @@ func Test_stack_Push(t *testing.T) {
 			}
 			for i := 0; i < 5; i++ {
 				fmt.Println(s.Pop())
+			}
+		})
+	}
+}
+
+func Test_removeDuplicates(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		// TODO: Add test cases.
+		{
+			name: "normal",
+			args: args{"abcde"},
+			want: "",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := removeDuplicates(tt.args.s); got != tt.want {
+				t.Errorf("removeDuplicates() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_removeDuplicates1(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		// TODO: Add test cases.
+		{
+			name: "normal",
+			args: args{"abbaca"},
+			want: "ca",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := removeDuplicates(tt.args.s); got != tt.want {
+				t.Errorf("removeDuplicates() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_isValid(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "normal",
+			args: args{"[{()}]{}[]"},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := isValid(tt.args.s); got != tt.want {
+				t.Errorf("isValid() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_topKFrequent(t *testing.T) {
+	type args struct {
+		nums []int
+		k    int
+	}
+	tests := []struct {
+		name string
+		args args
+		want []int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "normal",
+			args: args{
+				nums: []int{1, 1, 1, 2, 2, 3},
+				k:    2,
+			},
+			want: []int{1, 2},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := topKFrequent(tt.args.nums, tt.args.k); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("topKFrequent() = %v, want %v", got, tt.want)
 			}
 		})
 	}
