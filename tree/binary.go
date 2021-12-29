@@ -143,3 +143,39 @@ func PostOrder(root *node) []int {
 	}
 	return result
 }
+
+//镜像树
+//思路：前序遍历的时候交换左右孩子的数据节点
+func ReverseBinary(root *node) *node {
+	if root == nil {
+		return nil
+	}
+
+	root.Left, root.Right = root.Right, root.Left
+	ReverseBinary(root.Left)
+	ReverseBinary(root.Right)
+
+	return root
+}
+
+//非递归
+func ReverseBinary1(root *node) *node {
+	if root == nil {
+		return nil
+	}
+
+	stack := make([]*node, 0)
+	p := root
+	for len(stack) > 0 || p != nil {
+		for p != nil {
+			p.Left, p.Right = p.Right, p.Left
+			stack = append(stack, p)
+			p = p.Left
+		}
+		p = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		p = p.Right
+	}
+
+	return root
+}
