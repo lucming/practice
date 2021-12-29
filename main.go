@@ -26,4 +26,7 @@ func main() {
 	fmt.Println("中序遍历：", result)
 	result = tree.PostOrder(p1)
 	fmt.Println("后序遍历：", result)
+
+	tree.ReverseBinary1(p1)
+	fmt.Println("层次遍历：", tree.Bfs(p1))
 }
