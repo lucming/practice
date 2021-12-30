@@ -259,3 +259,64 @@ func Depth1(root *node) int {
 
 	return level
 }
+
+//二叉树节点数
+func CountNode(root *node) int {
+	if root == nil {
+		return 0
+	}
+
+	result := 1
+	if root.Left != nil {
+		result += CountNode(root.Left)
+	}
+	if root.Right != nil {
+		result += CountNode(root.Right)
+	}
+
+	return result
+}
+
+//func countNodes(root *TreeNode) int {
+//	if root == nil {
+//		return 0
+//	}
+//	leftH, rightH := 0, 0
+//	leftNode := root.Left
+//	rightNode := root.Right
+//	for leftNode != nil {
+//		leftNode = leftNode.Left
+//		leftH++
+//	}
+//	for rightNode != nil {
+//		rightNode = rightNode.Right
+//		rightH++
+//	}
+//	if leftH == rightH {
+//		return (2 << leftH) - 1
+//	}
+//	return countNodes(root.Left) + countNodes(root.Right) + 1
+//}
+
+func CountNode1(root *node) int {
+	if root == nil {
+		return 0
+	}
+
+	leftHight, rightHight := 0, 0
+	leftNode, rightNode := root.Left, root.Right
+
+	for leftNode != nil {
+		leftNode = leftNode.Left
+		leftHight++
+	}
+	for rightNode != nil {
+		rightNode = rightNode.Right
+		rightHight++
+	}
+	if leftHight == rightHight {
+		return 2<<leftHight - 1
+	}
+
+	return CountNode1(root.Left) + CountNode1(root.Right) + 1
+}

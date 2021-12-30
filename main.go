@@ -15,7 +15,7 @@ func main() {
 	p1.Left = p2
 	p1.Right = p3
 	p2.Left = p4
-	p3.Right = p5
+	p2.Right = p5
 
 	//p1.PostOrder()
 	result := tree.Bfs(p1)
@@ -31,4 +31,6 @@ func main() {
 	fmt.Println("层次遍历：", tree.Bfs(p1))
 	fmt.Println("is mirror:", tree.IsMirror1(p1))
 	fmt.Println("depth:", tree.Depth1(p1))
+	fmt.Println("count node:", tree.CountNode1(p1))
+	fmt.Println(2 << 10)
 }
