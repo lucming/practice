@@ -277,27 +277,6 @@ func CountNode(root *node) int {
 	return result
 }
 
-//func countNodes(root *TreeNode) int {
-//	if root == nil {
-//		return 0
-//	}
-//	leftH, rightH := 0, 0
-//	leftNode := root.Left
-//	rightNode := root.Right
-//	for leftNode != nil {
-//		leftNode = leftNode.Left
-//		leftH++
-//	}
-//	for rightNode != nil {
-//		rightNode = rightNode.Right
-//		rightH++
-//	}
-//	if leftH == rightH {
-//		return (2 << leftH) - 1
-//	}
-//	return countNodes(root.Left) + countNodes(root.Right) + 1
-//}
-
 func CountNode1(root *node) int {
 	if root == nil {
 		return 0
