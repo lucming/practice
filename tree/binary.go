@@ -179,3 +179,83 @@ func ReverseBinary1(root *node) *node {
 
 	return root
 }
+
+//判断是否为镜像数（树的左右孩子是否堆成）
+func IsMirror(root *node) bool {
+	return mirror(root.Left, root.Right)
+}
+
+func mirror(left *node, right *node) bool {
+	if left == nil && right == nil {
+		return true
+	}
+
+	if left == nil || right == nil {
+		return false
+	}
+	if left.Val != right.Val {
+		return false
+	}
+
+	return mirror(left.Left, right.Right) && mirror(right.Left, left.Right)
+}
+
+func IsMirror1(root *node) bool {
+	queue := make([]*node, 0)
+	if root != nil {
+		queue = append(queue, root.Left, root.Right)
+	}
+	for len(queue) > 0 {
+		left := queue[0]
+		right := queue[1]
+		queue = queue[2:]
+		if left == nil && right == nil {
+			continue
+		}
+		if left == nil || right == nil {
+			return false
+		}
+		queue = append(queue, left.Left, right.Right, right.Left, left.Right)
+	}
+
+	return true
+}
+
+func Depth(root *node) int {
+	if root == nil {
+		return 0
+	}
+
+	leftDepth := Depth(root.Left)
+	RightDepth := Depth(root.Right)
+	maxDepth := leftDepth
+	if RightDepth > leftDepth {
+		maxDepth = RightDepth
+	}
+
+	return maxDepth + 1
+}
+
+func Depth1(root *node) int {
+	level := 0
+	queue := make([]*node, 0)
+	if root != nil {
+		queue = append(queue, root)
+	}
+	for l := len(queue); l > 0; {
+		for ; l > 0; l-- {
+			p := queue[0]
+			if p.Left != nil {
+				queue = append(queue, p.Left)
+			}
+			if p.Right != nil {
+				queue = append(queue, p.Right)
+			}
+			queue = queue[1:]
+		}
+		level++
+		l = len(queue)
+	}
+
+	return level
+}
