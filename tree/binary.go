@@ -1,6 +1,8 @@
 package tree
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type node struct {
 	Val   int
@@ -258,4 +260,125 @@ func Depth1(root *node) int {
 	}
 
 	return level
+}
+
+//二叉树节点数
+func CountNode(root *node) int {
+	if root == nil {
+		return 0
+	}
+
+	result := 1
+	if root.Left != nil {
+		result += CountNode(root.Left)
+	}
+	if root.Right != nil {
+		result += CountNode(root.Right)
+	}
+
+	return result
+}
+
+func CountNode1(root *node) int {
+	if root == nil {
+		return 0
+	}
+
+	leftHight, rightHight := 0, 0
+	leftNode, rightNode := root.Left, root.Right
+
+	for leftNode != nil {
+		leftNode = leftNode.Left
+		leftHight++
+	}
+	for rightNode != nil {
+		rightNode = rightNode.Right
+		rightHight++
+	}
+	if leftHight == rightHight {
+		return 2<<leftHight - 1
+	}
+
+	return CountNode1(root.Left) + CountNode1(root.Right) + 1
+}
+
+//判断二叉树是否为平衡二叉树（每个子树的左右孩子高度差<=1）
+func IsBalance(root *node) bool {
+	if root == nil {
+		return true
+	}
+
+	if !IsBalance(root.Left) || !IsBalance(root.Right) {
+		return false
+	}
+
+	leftHight := treeHight(root.Left) + 1
+	rightHight := treeHight(root.Right) + 1
+	if abs(leftHight, rightHight) > 1 {
+		return false
+	}
+
+	return true
+}
+
+//计算树的高度(左右自孩子出生高度较高的+1)
+func treeHight(root *node) int {
+	if root == nil {
+		return 0
+	}
+
+	return max(treeHight(root.Left), treeHight(root.Right)) + 1
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+
+	return b
+}
+
+func abs(a, b int) int {
+	if a > b {
+		return a - b
+	}
+	return b - a
+}
+
+//前序+中序 构建树
+//思路：前序的第一个节点是根，然后拿着这个值在终须中找根节点的位置，这样就确定左右子孩子了，然后继续递归
+func BuildTree(preOrder []int, inorder []int) *node {
+	if len(preOrder) < 1 || len(inorder) < 1 {
+		return nil
+	}
+
+	rootIndex := findNextRoot(inorder, preOrder[0])
+	return &node{
+		Val:   preOrder[0],
+		Left:  BuildTree(preOrder[1:rootIndex+1], inorder[:rootIndex]),
+		Right: BuildTree(preOrder[rootIndex+1:], inorder[rootIndex+1:]),
+	}
+}
+
+func findNextRoot(inorder []int, target int) int {
+	for i := 0; i < len(inorder); i++ {
+		if target == inorder[i] {
+			return i
+		}
+	}
+
+	return -1
+}
+
+//后序+中序 构建树
+func Build(postorder []int, inorder []int) *node {
+	if len(postorder) < 1 || len(inorder) < 1 {
+		return nil
+	}
+	nextRootIndex := findNextRoot(inorder, postorder[len(postorder)-1])
+	return &node{
+		Val:   postorder[len(postorder)-1],
+		Left:  Build(postorder[:nextRootIndex], inorder[:nextRootIndex]),
+		Right: Build(postorder[nextRootIndex:len(postorder)-1], inorder[nextRootIndex+1:]),
+	}
 }
