@@ -2,6 +2,7 @@ package tree
 
 import (
 	"fmt"
+	"strconv"
 )
 
 type node struct {
@@ -319,6 +320,64 @@ func IsBalance(root *node) bool {
 	}
 
 	return true
+}
+
+//求二叉树所有路径，递归&回溯
+func BinaryTreePaths(root *node) []string {
+	result := make([]string, 0)
+	var travel func(*node, string)
+	travel = func(root *node, s string) {
+		if root == nil {
+			return
+		}
+
+		if root.Left == nil && root.Right == nil {
+			result = append(result, s+strconv.Itoa(root.Val))
+			return
+		}
+		if root.Left != nil {
+			travel(root.Left, s+strconv.Itoa(root.Val)+"->")
+		}
+		if root.Right != nil {
+			travel(root.Right, s+strconv.Itoa(root.Val)+"->")
+		}
+	}
+
+	travel(root, "")
+	return result
+}
+
+//非递归求二叉树路径
+func BinaryTreePaths1(root *node) []string {
+	result := make([]string, 0)
+	paths := make([]string, 0)
+	stack := make([]*node, 0)
+	if root != nil {
+		paths = append(paths, "")
+		stack = append(stack, root)
+	}
+
+	for len(stack) > 0 {
+		lenStack := len(stack)
+		cur := stack[lenStack-1]
+		path := paths[lenStack-1]
+		stack = stack[:lenStack-1]
+		paths = paths[:lenStack-1]
+		if cur.Left == nil && cur.Right == nil {
+			result = append(result, path+strconv.Itoa(cur.Val))
+			continue
+		}
+		if cur.Left != nil {
+			stack = append(stack, cur.Left)
+			paths = append(paths, path+strconv.Itoa(cur.Val)+"->")
+		}
+		if cur.Right != nil {
+			stack = append(stack, cur.Right)
+			paths = append(paths, path+strconv.Itoa(cur.Val)+"->")
+		}
+	}
+
+	return result
 }
 
 //计算树的高度(左右自孩子出生高度较高的+1)

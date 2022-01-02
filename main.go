@@ -37,4 +37,6 @@ func main() {
 	//root := tree.BuildTree([]int{1, 2, 4, 100, 4, 2}, []int{100, 4, 2, 4, 1, 2})
 	root := tree.Build([]int{100, 4, 4, 2, 2, 1}, []int{100, 4, 2, 4, 1, 2})
 	fmt.Println("level travel:", tree.Bfs(root))
+	fmt.Println(tree.BinaryTreePaths1(p1))
+
 }
