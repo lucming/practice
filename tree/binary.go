@@ -441,3 +441,45 @@ func Build(postorder []int, inorder []int) *node {
 		Right: Build(postorder[nextRootIndex:len(postorder)-1], inorder[nextRootIndex+1:]),
 	}
 }
+
+//判断两棵树是否相等
+func IsSame(root1 *node, root2 *node) bool {
+	if root1 == nil && root2 != nil {
+		return false
+	} else if root2 == nil && root1 != nil {
+		return false
+	} else if root1 == nil && root2 == nil {
+		return true
+	} else if root1.Val != root2.Val {
+		return false
+	}
+
+	return IsSame(root1.Left, root2.Left) && IsSame(root1.Right, root2.Right)
+}
+
+//非递归判断两棵树是否相等
+func IsSame1(root1 *node, root2 *node) bool {
+	if root1 == nil && root2 == nil {
+		return true
+	}
+	if root1 == nil || root2 == nil {
+		return false
+	}
+
+	queue := make([]*node, 0)
+	queue = append(queue, root1, root2)
+	for len(queue) > 0 {
+		p1 := queue[0]
+		p2 := queue[1]
+		queue = queue[2:]
+		if p1 == nil && p2 == nil {
+			continue
+		}
+		if (p1 == nil || p2 == nil) || (p1.Val != p2.Val) {
+			return false
+		}
+		queue = append(queue, p1.Left, p1.Right, p2.Left, p2.Right)
+	}
+
+	return true
+}

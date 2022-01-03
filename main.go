@@ -38,5 +38,5 @@ func main() {
 	root := tree.Build([]int{100, 4, 4, 2, 2, 1}, []int{100, 4, 2, 4, 1, 2})
 	fmt.Println("level travel:", tree.Bfs(root))
 	fmt.Println(tree.BinaryTreePaths1(p1))
-
+	fmt.Println("is same:", tree.IsSame1(tree.NewNode(1), p1))
 }
