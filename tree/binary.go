@@ -483,3 +483,24 @@ func IsSame1(root1 *node, root2 *node) bool {
 
 	return true
 }
+
+func HasPath(root *node, sum int) bool {
+	flag := false
+	if root == nil {
+		return flag
+	}
+
+	return findPath(root, 0, sum)
+}
+
+func findPath(root *node, cur, sum int) bool {
+	if root == nil {
+		return false
+	}
+
+	if root.Left == nil && root.Right == nil && root.Val+cur == sum {
+		return true
+	}
+
+	return findPath(root.Left, cur+root.Val, sum) || findPath(root.Right, cur+root.Val, sum)
+}
