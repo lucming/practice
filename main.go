@@ -39,4 +39,5 @@ func main() {
 	fmt.Println("level travel:", tree.Bfs(root))
 	fmt.Println(tree.BinaryTreePaths1(p1))
 	fmt.Println("is same:", tree.IsSame1(tree.NewNode(1), p1))
+	fmt.Println("has path:", tree.HasPath(p1, 100))
 }
