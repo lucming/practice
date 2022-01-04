@@ -485,9 +485,8 @@ func IsSame1(root1 *node, root2 *node) bool {
 }
 
 func HasPath(root *node, sum int) bool {
-	flag := false
 	if root == nil {
-		return flag
+		return false
 	}
 
 	return findPath(root, 0, sum)
