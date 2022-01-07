@@ -503,3 +503,64 @@ func findPath(root *node, cur, sum int) bool {
 
 	return findPath(root.Left, cur+root.Val, sum) || findPath(root.Right, cur+root.Val, sum)
 }
+
+//获取树中出现的众数
+func GetMost(root *node) []int {
+	result := make([]int, 0)
+	count, max := 0, 0
+	var pre *node
+	var travel func(*node)
+	travel = func(root *node) {
+		if root == nil {
+			return
+		}
+		travel(root.Left)
+		if pre != nil && pre.Val == root.Val {
+			count++
+		} else {
+			count = 1
+		}
+
+		if count >= max {
+			if count > max && len(result) > 0 {
+				result = []int{root.Val}
+			} else {
+				result = append(result, root.Val)
+			}
+			max = count
+		}
+		pre = root
+		travel(root.Right)
+	}
+
+	travel(root)
+	return result
+}
+
+//寻找两节点公共祖先
+//思路：后续遍历
+func FindCommonAncestor(root, p, q *node) *node {
+	if root == nil {
+		return root
+	}
+
+	if root == p || root == q {
+		return root
+	}
+
+	left := FindCommonAncestor(root.Left, p, q)
+	right := FindCommonAncestor(root.Right, p, q)
+
+	if left != nil && right != nil {
+		return root
+	}
+
+	if left != nil {
+		return left
+	}
+	if right != nil {
+		return right
+	}
+
+	return nil
+}

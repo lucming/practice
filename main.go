@@ -7,16 +7,16 @@ import (
 
 func main() {
 	fmt.Println("hello world")
-	p1 := tree.NewNode(1)
-	p2 := tree.NewNode(2)
-	p3 := tree.NewNode(2)
-	p4 := tree.NewNode(4)
+	p1 := tree.NewNode(5)
+	p2 := tree.NewNode(3)
+	p3 := tree.NewNode(6)
+	p4 := tree.NewNode(2)
 	p5 := tree.NewNode(4)
 	p1.Left = p2
 	p1.Right = p3
 	p2.Left = p4
 	p2.Right = p5
-	p4.Left = tree.NewNode(100)
+	p4.Left = tree.NewNode(2)
 
 	//p1.PostOrder()
 	result := tree.Bfs(p1)
@@ -40,4 +40,6 @@ func main() {
 	fmt.Println(tree.BinaryTreePaths1(p1))
 	fmt.Println("is same:", tree.IsSame1(tree.NewNode(1), p1))
 	fmt.Println("has path:", tree.HasPath(p1, 100))
+	fmt.Println("find most:", tree.GetMost(p1))
+	fmt.Println("find common ancestor:", tree.FindCommonAncestor(p1, p4, p5).Val)
 }
