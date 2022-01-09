@@ -566,3 +566,54 @@ func FindCommonAncestor(root, p, q *node) *node {
 
 	return nil
 }
+
+//树中插入新节点
+func InsertNode(root *node, val int) *node {
+	if root == nil {
+		return NewNode(val)
+	}
+	if val > root.Val {
+		root.Right = InsertNode(root.Right, val)
+	}
+	if val < root.Val {
+		root.Left = InsertNode(root.Left, val)
+	}
+
+	return root
+}
+
+//非递归，插入新节点
+func InsertNode1(root *node, val int) *node {
+	if root == nil {
+		return NewNode(val)
+	}
+
+	var pre *node
+	p := root
+	for p != nil {
+		pre = p
+		if val > p.Val {
+			p = p.Right
+		} else {
+			p = p.Left
+		}
+	}
+	if val < pre.Val {
+		pre.Left = NewNode(val)
+	} else {
+		pre.Right = NewNode(val)
+	}
+
+	return root
+}
+
+//array->binary tree
+func ArrayToTree(arr []int) *node {
+	if len(arr) == 0 {
+		return nil
+	}
+	root := NewNode(arr[len(arr)/2])
+	root.Left = ArrayToTree(arr[:len(arr)/2])
+	root.Right = ArrayToTree(arr[len(arr)/2+1:])
+	return root
+}

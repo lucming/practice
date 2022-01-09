@@ -16,7 +16,7 @@ func main() {
 	p1.Right = p3
 	p2.Left = p4
 	p2.Right = p5
-	p4.Left = tree.NewNode(2)
+	p4.Left = tree.NewNode(1)
 
 	//p1.PostOrder()
 	result := tree.Bfs(p1)
@@ -42,4 +42,9 @@ func main() {
 	fmt.Println("has path:", tree.HasPath(p1, 100))
 	fmt.Println("find most:", tree.GetMost(p1))
 	fmt.Println("find common ancestor:", tree.FindCommonAncestor(p1, p4, p5).Val)
+	fmt.Println("层次遍历：", tree.Bfs(p1))
+	fmt.Println("insert value:", tree.InsertNode1(p1, 7))
+	fmt.Println("层次遍历：", tree.Bfs(p1))
+	p := tree.ArrayToTree([]int{1, 2, 3, 4, 5, 6, 7})
+	fmt.Println(tree.Bfs(p))
 }
