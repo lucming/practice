@@ -4,7 +4,7 @@ package permutationAndCombination
 // 思路：每次从集合中选取元素，可选择的范围随着选择的进行而收缩，调整可选择的范围。可以发现n相当于树的宽度，k相当于树的深度。
 func getCombinations(n int, k int) [][]int {
 	result := make([][]int, 0)
-	if n <= 0 || k <= 0 || n < k {
+	if n <= 0 || k <= 0 || k > n {
 		return result
 	}
 
@@ -26,5 +26,43 @@ func getCombinations(n int, k int) [][]int {
 	}
 
 	do(n, k, 1, []int{})
+	return result
+}
+
+//找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
+//说明：
+//所有数字都是正整数。
+//解集不能包含重复的组合。
+//示例 1: 输入: k = 3, n = 7 输出: [[1,2,4]]
+//示例 2: 输入: k = 3, n = 9 输出: [[1,2,6], [1,3,5], [2,3,4]]
+func CombinationsSum(k, n int) [][]int {
+	result := make([][]int, 0)
+	track := make([]int, 0)
+	if n <= 0 || k <= 0 || n < k {
+		return result
+	}
+	var do func(int, int, int, []int)
+	do = func(n, k, start int, track []int) {
+		if len(track) == k {
+			sum := 0
+			tmp := make([]int, k)
+			for k, v := range track {
+				sum += v
+				tmp[k] = v
+			}
+			if sum == n {
+				result = append(result, tmp)
+			}
+			return
+		}
+
+		for i := start; i <= 9-(k-len(track))+1; i++ {
+			track = append(track, i)
+			do(n, k, i+1, track)
+			track = track[:len(track)-1]
+		}
+	}
+
+	do(n, k, 1, track)
 	return result
 }

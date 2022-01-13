@@ -37,3 +37,32 @@ func Test_getCombinations(t *testing.T) {
 		})
 	}
 }
+
+func TestCombinationsSum(t *testing.T) {
+	type args struct {
+		n int
+		k int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "normal",
+			args: args{
+				n: 7,
+				k: 3,
+			},
+			want: [][]int{{1, 2, 4}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := CombinationsSum(tt.args.k, tt.args.n); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("CombinationsSum() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
