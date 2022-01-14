@@ -1,1 +1,1 @@
-practice project
+this project is for practice

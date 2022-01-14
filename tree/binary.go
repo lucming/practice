@@ -484,6 +484,8 @@ func IsSame1(root1 *node, root2 *node) bool {
 	return true
 }
 
+// 判断树是否存在一条从根到叶子节点的路径，使得途径的所有节点的value之和等于某个值
+// 思路：先序遍历，判断左右子树中是否存在这样的路径
 func HasPath(root *node, sum int) bool {
 	if root == nil {
 		return false
