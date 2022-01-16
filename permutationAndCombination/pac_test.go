@@ -103,3 +103,40 @@ func TestCombinationSum(t *testing.T) {
 		})
 	}
 }
+
+func TestCombinationSum1(t *testing.T) {
+	type args struct {
+		condidates []int
+		target     int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{
+				condidates: []int{10, 1, 2, 7, 6, 1, 5},
+				target:     8,
+			},
+			want: [][]int{{1, 1, 6}, {1, 2, 5}, {1, 7}, {2, 6}},
+		},
+		{
+			name: "test2",
+			args: args{
+				condidates: []int{2, 5, 2, 1, 2},
+				target:     5,
+			},
+			want: [][]int{{1, 2, 2}, {5}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := CombinationSum1(tt.args.condidates, tt.args.target); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("CombinationSum1() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
