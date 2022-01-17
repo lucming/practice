@@ -143,3 +143,44 @@ func backTrack1(start, sum, target int, condidates []int, track []int, result *[
 		used[i] = false
 	}
 }
+
+//给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。
+//返回 s 所有可能的分割方案。
+//示例: 输入: "aab" 输出: [ ["aa","b"], ["a","a","b"] ]
+func partition(s string) [][]string {
+	var tmpStr []string
+	var result [][]string
+	backTracing(s, 0, tmpStr, &result)
+	return result
+}
+
+func backTracing(s string, start int, tmpStr []string, result *[][]string) {
+	if start == len(s) {
+		tmp := make([]string, len(tmpStr))
+		copy(tmp, tmpStr)
+		*result = append(*result, tmp)
+		return
+	}
+
+	for i := start; i < len(s); i++ {
+		if !isCycle(s, start, i) {
+			continue
+		}
+		tmpStr = append(tmpStr, s[start:i+1])
+		backTracing(s, i+1, tmpStr, result)
+		tmpStr = tmpStr[:len(tmpStr)-1]
+	}
+}
+
+func isCycle(s string, start, end int) bool {
+	l, r := start, end
+	for l < r {
+		if s[l] != s[r] {
+			return false
+		}
+		l++
+		r--
+	}
+
+	return true
+}
