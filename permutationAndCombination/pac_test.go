@@ -165,3 +165,33 @@ func Test_partition(t *testing.T) {
 		})
 	}
 }
+
+func TestRestoreIp(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{"25525511135"},
+			want: []string{"255.255.11.135", "255.255.111.35"},
+		},
+		{
+			name: "test2",
+			args: args{"0000"},
+			want: []string{"0.0.0.0"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := RestoreIp(tt.args.s); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("RestoreIp() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

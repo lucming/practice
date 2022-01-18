@@ -1,6 +1,10 @@
 package permutationAndCombination
 
-import "sort"
+import (
+	"sort"
+	"strconv"
+	"strings"
+)
 
 //题目：给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合
 // 思路：每次从集合中选取元素，可选择的范围随着选择的进行而收缩，调整可选择的范围。可以发现n相当于树的宽度，k相当于树的深度。
@@ -182,5 +186,43 @@ func isCycle(s string, start, end int) bool {
 		r--
 	}
 
+	return true
+}
+
+//给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。
+//有效的 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+//例如："0.1.2.201" 和 "192.168.1.1" 是 有效的 IP 地址，但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效的 IP 地址。
+func RestoreIp(s string) []string {
+	var path, result []string
+	back(s, 0, path, &result)
+	return result
+}
+
+func back(s string, start int, path []string, result *[]string) {
+	if start == len(s) && len(path) == 4 {
+		ip := strings.Join(path, ".")
+		*result = append(*result, ip)
+		return
+	}
+
+	for i := start; i < len(s); i++ {
+		path = append(path, s[start:i+1])
+		if len(path) <= 4 && i-start+1 <= 3 && isIp(s, start, i) {
+			back(s, i+1, path, result)
+		} else {
+			return
+		}
+		path = path[:len(path)-1]
+	}
+}
+
+func isIp(s string, start, end int) bool {
+	i, _ := strconv.Atoi(s[start : end+1])
+	if end-start+1 > 1 && s[start] == '0' {
+		return false
+	}
+	if i > 255 {
+		return false
+	}
 	return true
 }
