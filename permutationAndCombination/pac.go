@@ -226,3 +226,26 @@ func isIp(s string, start, end int) bool {
 	}
 	return true
 }
+
+//给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+//说明：解集不能包含重复的子集。
+//示例: 输入: nums = [1,2,3] 输出: [[3],[1],[2],[1,2,3],[1,3],[2,3],[1,2],[]]
+func Subset(nums []int) [][]int {
+	result := make([][]int, 0)
+	sort.Ints(nums)
+	var do func([]int, []int, int)
+	do = func(nums []int, cur []int, start int) {
+		tmp := make([]int, len(cur))
+		copy(tmp, cur)
+		result = append(result, tmp)
+
+		for i := start; i < len(nums); i++ {
+			cur = append(cur, nums[i])
+			do(nums, cur, i+1)
+			cur = cur[:len(cur)-1]
+		}
+	}
+
+	do(nums, []int{}, 0)
+	return result
+}
