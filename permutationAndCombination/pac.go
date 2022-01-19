@@ -226,3 +226,63 @@ func isIp(s string, start, end int) bool {
 	}
 	return true
 }
+
+//给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+//说明：解集不能包含重复的子集。
+//示例: 输入: nums = [1,2,3] 输出: [[3],[1],[2],[1,2,3],[1,3],[2,3],[1,2],[]]
+func Subset(nums []int) [][]int {
+	result := make([][]int, 0)
+	sort.Ints(nums)
+	var do func([]int, []int, int)
+	do = func(nums []int, cur []int, start int) {
+		tmp := make([]int, len(cur))
+		copy(tmp, cur)
+		result = append(result, tmp)
+
+		for i := start; i < len(nums); i++ {
+			cur = append(cur, nums[i])
+			do(nums, cur, i+1)
+			cur = cur[:len(cur)-1]
+		}
+	}
+
+	do(nums, []int{}, 0)
+	return result
+}
+
+//给定一个整型数组, 你的任务是找到所有该数组的递增子序列，递增子序列的长度至少是2。
+//示例:
+//输入: [4, 6, 7, 7]
+//输出: [[4, 6], [4, 7], [4, 6, 7], [4, 6, 7, 7], [6, 7], [6, 7, 7], [7,7], [4,7,7]]
+//说明:
+//给定数组的长度不会超过15。
+//数组中的整数范围是 [-100,100]。
+//给定数组中可能包含重复数字，相等的数字应该被视为递增的一种情况。
+func findSubsequences(nums []int) [][]int {
+	result := make([][]int, 0)
+	var do func([]int, int, []int)
+	do = func(nums []int, start int, cur []int) {
+		if len(cur) > 1 {
+			tmp := make([]int, len(cur))
+			copy(tmp, cur)
+			result = append(result, tmp)
+		}
+		//用于标记历史数据是否出现过
+		history := make([]bool, 201)
+		for i := start; i < len(nums); i++ {
+			//两种情况：
+			//  1. 当前元素已经出现过，继续找
+			//  2. 当前元素<子集最后一个元素，不必继续
+			if history[nums[i]+100] == true || len(cur) > 0 && nums[i] < cur[len(cur)-1] {
+				continue
+			}
+			history[nums[i]+100] = true
+			cur = append(cur, nums[i])
+			do(nums, i+1, cur)
+			cur = cur[:len(cur)-1]
+		}
+	}
+
+	do(nums, 0, []int{})
+	return result
+}
