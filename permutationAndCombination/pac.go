@@ -286,3 +286,51 @@ func findSubsequences(nums []int) [][]int {
 	do(nums, 0, []int{})
 	return result
 }
+
+//给定一个 没有重复 数字的序列，返回其所有可能的全排列。
+func permute(nums []int) [][]int {
+	result := make([][]int, 0)
+	history := make([]bool, len(nums))
+	var do func([]int, int, []int)
+	do = func(nums []int, lenNums int, cur []int) {
+		if len(cur) == lenNums {
+			tmp := make([]int, len(cur))
+			copy(tmp, cur)
+			result = append(result, tmp)
+		}
+		for i := 0; i < lenNums; i++ {
+			if history[i] {
+				continue
+			}
+			cur = append(cur, nums[i])
+			history[i] = true
+			do(nums, lenNums, cur)
+			cur = cur[:len(cur)-1]
+			history[i] = false
+		}
+	}
+	do(nums, len(nums), []int{})
+	return result
+}
+
+func permute1(nums []int) [][]int {
+	result := make([][]int, 0)
+	var do func([]int, int, []int)
+	do = func(nums []int, lenNums int, cur []int) {
+		if len(nums) == 0 {
+			tmp := make([]int, len(cur))
+			copy(tmp, cur)
+			result = append(result, tmp)
+		}
+		for i := 0; i < lenNums; i++ {
+			used := nums[i]
+			cur = append(cur, used)
+			nums = append(nums[:i], nums[i+1:]...)
+			do(nums, len(nums), cur)
+			cur = cur[:len(cur)-1]
+			nums = append(nums[:i], append([]int{used}, nums[i:]...)...)
+		}
+	}
+	do(nums, len(nums), []int{})
+	return result
+}
