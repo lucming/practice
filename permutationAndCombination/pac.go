@@ -334,3 +334,68 @@ func permute1(nums []int) [][]int {
 	do(nums, len(nums), []int{})
 	return result
 }
+
+//给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
+//1 <= nums.length <= 8
+//-10 <= nums[i] <= 10
+//示例 1：
+//输入：nums = [1,1,2]
+//输出： [[1,1,2], [1,2,1], [2,1,1]]
+//示例 2：
+//输入：nums = [1,2,3]
+//输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+func permuteHasSameNum(nums []int) [][]int {
+	result := make([][]int, 0)
+	used := make([]bool, len(nums))
+	sort.Ints(nums)
+	var do func([]int, []int)
+	do = func(nums []int, cur []int) {
+		if len(cur) == len(nums) {
+			tmp := make([]int, len(cur))
+			copy(tmp, cur)
+			result = append(result, tmp)
+		}
+		for i := 0; i < len(nums); i++ {
+			if used[i] || (i > 0 && nums[i] == nums[i-1] && !used[i-1]) {
+				continue
+			}
+
+			cur = append(cur, nums[i])
+			used[i] = true
+			do(nums, cur)
+			cur = cur[:len(cur)-1]
+			used[i] = false
+		}
+	}
+	do(nums, []int{})
+	return result
+}
+
+func permuteHasSameNum1(nums []int) [][]int {
+	result := make([][]int, 0)
+	var do func([]int, int, []int)
+	do = func(nums []int, lenNums int, cur []int) {
+		if len(nums) == 0 {
+			tmp := make([]int, len(cur))
+			copy(tmp, cur)
+			result = append(result, tmp)
+		}
+		used := make([]bool, 21)
+		for i := 0; i < lenNums; i++ {
+			if used[nums[i]+10] {
+				continue
+			}
+
+			d := nums[i]
+			cur = append(cur, d)
+			used[nums[i]+10] = true
+			nums = append(nums[:i], nums[i+1:]...)
+			do(nums, len(nums), cur)
+			cur = cur[:len(cur)-1]
+			nums = append(nums[:i], append([]int{d}, nums[i:]...)...)
+		}
+	}
+
+	do(nums, len(nums), []int{})
+	return result
+}
