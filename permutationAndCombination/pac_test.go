@@ -275,3 +275,33 @@ func Test_permute(t *testing.T) {
 		})
 	}
 }
+
+func Test_permuteHasSameNum(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{[]int{1, 1, 2}},
+			want: [][]int{{1, 1, 2}, {1, 2, 1}, {2, 1, 1}},
+		},
+		{
+			name: "test2",
+			args: args{[]int{1, 2, 3}},
+			want: [][]int{{1, 2, 3}, {1, 3, 2}, {2, 1, 3}, {2, 3, 1}, {3, 1, 2}, {3, 2, 1}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := permuteHasSameNum1(tt.args.nums); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("permuteHasSameNum() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
