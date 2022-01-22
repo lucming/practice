@@ -305,3 +305,28 @@ func Test_permuteHasSameNum(t *testing.T) {
 		})
 	}
 }
+
+func Test_nQueues(t *testing.T) {
+	type args struct {
+		n int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]string
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{4},
+			want: [][]string{{".Q..", "...Q", "Q...", "..Q."}, {"..Q.", "Q...", "...Q", ".Q.."}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := nQueues(tt.args.n); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("nQueues() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
