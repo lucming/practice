@@ -399,3 +399,77 @@ func permuteHasSameNum1(nums []int) [][]int {
 	do(nums, len(nums), []int{})
 	return result
 }
+
+//n皇后问题
+//n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+//给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
+//每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+//示例 1：
+//输入：n = 4
+//输出：[[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+//示例 2：
+//输入：n = 1
+//输出：[["Q"]]
+func nQueues(n int) [][]string {
+	result := make([][]string, 0)
+	board := make([][]string, n)
+	for i := 0; i < n; i++ {
+		board[i] = make([]string, n)
+	}
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			board[i][j] = "."
+		}
+	}
+
+	var do func([][]string, int)
+	do = func(board [][]string, row int) {
+		lenBoard := len(board)
+		if row == lenBoard {
+			tmp := make([]string, lenBoard)
+			for i := 0; i < lenBoard; i++ {
+				tmp[i] = strings.Join(board[i], "")
+			}
+			result = append(result, tmp)
+			return
+		}
+
+		for col := 0; col < lenBoard; col++ {
+			if !isValid(board, row, col) {
+				continue
+			}
+			board[row][col] = "Q"
+			do(board, row+1)
+			board[row][col] = "."
+		}
+	}
+
+	do(board, 0)
+	return result
+}
+
+func isValid(board [][]string, row, col int) (res bool) {
+	n := len(board)
+	for i := 0; i < row; i++ {
+		if board[i][col] == "Q" {
+			return false
+		}
+	}
+	for i := 0; i < n; i++ {
+		if board[row][i] == "Q" {
+			return false
+		}
+	}
+
+	for i, j := row, col; i >= 0 && j >= 0; i, j = i-1, j-1 {
+		if board[i][j] == "Q" {
+			return false
+		}
+	}
+	for i, j := row, col; i >= 0 && j < n; i, j = i-1, j+1 {
+		if board[i][j] == "Q" {
+			return false
+		}
+	}
+	return true
+}
