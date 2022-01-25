@@ -101,3 +101,52 @@ func wiggleMaxLength1(nums []int) int {
 
 	return max(dp[len(nums)-1][0], dp[len(nums)-1][1])
 }
+
+//最大连续子数组和
+//给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+//示例: 输入: [-2,1,-3,4,-1,2,1,-5,4] 输出: 6 解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+//暴力
+func maxSubArray(nums []int) int {
+	result := 0
+	for i := 0; i < len(nums); i++ {
+		count := 0
+		for j := i; j < len(nums); j++ {
+			count += nums[j]
+			result = max(result, count)
+		}
+	}
+	return result
+}
+
+//贪心算法（eg:[-2,1]这种情况肯定会从1开始算起，因为负数会拉低总和），
+//局部最优（如果当前连续和为负数的时候立刻放弃，从下一个下标开始重新计算连续和，因为负数只会拉低最后的结果）
+func maxSubArray1(nums []int) int {
+	result := 0
+	count := 0
+	for i := 0; i < len(nums); i++ {
+		count += nums[i]
+		if count < 0 {
+			count = 0
+			continue
+		}
+		result = max(result, count)
+	}
+
+	return result
+}
+
+//动态规划（每次会取前面最大和+当前值和当前值的较大值）
+func maxSubArray2(nums []int) int {
+	if len(nums) <= 0 {
+		return 0
+	}
+	dp := make([]int, len(nums))
+	dp[0] = nums[0]
+	result := dp[0]
+	for i := 1; i < len(nums); i++ {
+		dp[i] = max(dp[i-1]+nums[i], nums[i])
+		result = max(result, dp[i])
+	}
+
+	return result
+}
