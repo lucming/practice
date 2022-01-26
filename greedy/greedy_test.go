@@ -98,3 +98,63 @@ func Test_maxSubArray(t *testing.T) {
 		})
 	}
 }
+
+func Test_maxProfit(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{[]int{7, 1, 5, 3, 6, 4}},
+			want: 7,
+		},
+		{
+			name: "test2",
+			args: args{[]int{1, 2, 3, 4, 5}},
+			want: 4,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := maxProfit1(tt.args.nums); got != tt.want {
+				t.Errorf("maxProfit() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_canJump(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{[]int{2, 3, 1, 1, 4}},
+			want: true,
+		},
+		{
+			name: "test2",
+			args: args{[]int{3, 2, 1, 0, 4}},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := canJump(tt.args.nums); got != tt.want {
+				t.Errorf("canJump() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
