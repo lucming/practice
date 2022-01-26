@@ -150,3 +150,38 @@ func maxSubArray2(nums []int) int {
 
 	return result
 }
+
+//买卖股票的问题
+//贪心算法，每次只选择当前有收益的进行累计
+func maxProfit(nums []int) int {
+	if len(nums) <= 1 {
+		return 0
+	}
+	result := 0
+	for i := 1; i < len(nums); i++ {
+		profit := nums[i] - nums[i-1]
+		if profit > 0 {
+			result += profit
+		}
+	}
+
+	return result
+}
+
+//动态规划的解法
+func maxProfit1(nums []int) int {
+	dp := make([][]int, len(nums))
+	for i := 0; i < len(nums); i++ {
+		dp[i] = make([]int, 2)
+	}
+
+	dp[0][0] -= nums[0]
+	for i := 1; i < len(nums); i++ {
+		//第i天持股所剩最多现金=max(第i-1天持股票所剩的现金,第i-1天持现金-今天买入的现金)
+		dp[i][0] = max(dp[i-1][0], dp[i-1][1]-nums[i])
+		//第i天持有的最多现金=max(第i-1天持有最多的现金,第i-1天的股票最多现金+第i天卖出去的股票)
+		dp[i][1] = max(dp[i-1][1], dp[i-1][0]+nums[i])
+	}
+
+	return max(dp[len(nums)-1][0], dp[len(nums)-1][1])
+}
