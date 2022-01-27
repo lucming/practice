@@ -208,3 +208,52 @@ func canJump(nums []int) bool {
 
 	return false
 }
+
+//题目：给定数组，判断最少几步可以走到结束，数组中每个元素代表可以最多跳的步数
+//示例:
+//输入: [2,3,1,1,4]
+//输出: 2
+//解释: 跳到最后一个位置的最小跳跃数是 2。从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+//说明: 假设你总是可以到达数组的最后一个位置。
+func jump(nums []int) int {
+	if len(nums) <= 1 {
+		return 0
+	}
+	curRange, nextRange := 0, 0
+	steps := 0
+
+	for i := 0; i < len(nums); i++ {
+		nextRange = max(nextRange, nums[i]+i)
+		if i != curRange {
+			continue
+		}
+		if curRange == len(nums)-1 {
+			continue
+		}
+		steps++
+		curRange = nextRange
+		if nextRange >= len(nums)-1 {
+			break
+		}
+	}
+
+	return steps
+}
+
+func jump1(nums []int) int {
+	if len(nums) <= 1 {
+		return 0
+	}
+	cur, next := 0, 0
+	step := 0
+	for i := 0; i < len(nums)-1; i++ {
+		next = max(next, nums[i]+i)
+		if i != cur {
+			continue
+		}
+		step++
+		cur = next
+	}
+
+	return step
+}
