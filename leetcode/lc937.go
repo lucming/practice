@@ -27,4 +27,34 @@ func kClosest(points [][]int, k int) [][]int {
 }
 
 //解法2：快排
+func less(point1, point2 []int) bool {
+	return point1[0]*point1[0]+point1[1]*point1[1] < point2[0]*point2[0]+point2[1]*point2[1]
+}
+
+func kClosest1(points [][]int, k int) [][]int {
+	var quickSelect func(int, int)
+	quickSelect = func(left, right int) {
+		if left < right {
+			i, j := left, right
+			tmp := points[i]
+			for i < j {
+				for i < j && less(tmp, points[i]) {
+					j--
+				}
+				points[i] = points[j]
+
+				for i < j && !less(tmp, points[i]) {
+					i++
+				}
+				points[j] = points[i]
+			}
+			points[i] = tmp
+			quickSelect(left, i-1)
+			quickSelect(i+1, right)
+		}
+	}
+	quickSelect(0, len(points)-1)
+	return points[:k]
+}
+
 //解法3：大根堆

@@ -35,7 +35,7 @@ func Test_kClosest(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := kClosest(tt.args.points, tt.args.k); !reflect.DeepEqual(got, tt.want) {
+			if got := kClosest1(tt.args.points, tt.args.k); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("kClosest() = %v, want %v", got, tt.want)
 			}
 		})
