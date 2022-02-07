@@ -1,6 +1,8 @@
 package greedy
 
-import "sort"
+import (
+	"sort"
+)
 
 //分饼干问题
 //g数组描述每个孩子满足值，s数组表示每个饼干的大小
@@ -350,4 +352,31 @@ func lemonadeChange(bills []int) bool {
 	}
 
 	return true
+}
+
+//输入：一个数组 points ，其中 points [i] = [xstart,xend] ，
+//输出：返回引爆所有气球所必须射出的最小弓箭数。
+func findMinArrowShots(points [][]int) int {
+	result := 1
+	sort.Slice(points, func(i, j int) bool {
+		return points[i][0] < points[j][0]
+	})
+
+	for i := 1; i < len(points); i++ {
+		//有重叠，需要一剑
+		if points[i-1][1] < points[i][0] {
+			result++
+		} else { //更新最小的右边界
+			points[i][1] = min(points[i-1][1], points[i][1])
+		}
+	}
+
+	return result
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
