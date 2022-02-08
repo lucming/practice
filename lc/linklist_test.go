@@ -11,7 +11,7 @@ func Test_node_headInsert(t *testing.T) {
 		head.headInsert(i)
 	}
 	head.show()
-	reverse2(&head)
+	reverse(&head)
 	head.show()
 }
 
@@ -188,6 +188,39 @@ func Test_deleteK(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			deleteK(tt.args.head, tt.args.k)
 			tt.args.head.show()
+		})
+	}
+}
+
+func TestSortList(t *testing.T) {
+	//1，12，4，10，6，8，9
+	n6 := node{data: 9}
+	n5 := node{data: 8, next: &n6}
+	n4 := node{data: 6, next: &n5}
+	n3 := node{data: 10, next: &n4}
+	n2 := node{data: 4, next: &n3}
+	n1 := node{data: 12, next: &n2}
+	head := node{next: &n1, data: 1}
+
+	type args struct {
+		head *node
+	}
+	tests := []struct {
+		name string
+		args args
+		want *node
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{&head},
+			want: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := SortList(tt.args.head)
+			p.show()
 		})
 	}
 }

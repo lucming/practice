@@ -219,3 +219,101 @@ func deleteK(head *node, k int) {
 	}
 	slow.next = slow.next.next
 }
+
+//需要一个方法，方法的入参是一个链表。链表奇数位置上的元素是升序排列，偶数位置上的元素是降序排列
+//对入参链表重新排序输出。
+//示例。 1，12，4，10，6，8，9
+func splitList(head *node) (*node, *node) {
+	idx := 1
+	var p1, p2, pcurrent1, pcurrent2 *node
+	for head != nil {
+		if idx%2 == 1 {
+			if p1 == nil {
+				pcurrent1 = head
+				p1 = pcurrent1
+			} else {
+				pcurrent1.next = &node{data: head.data}
+				pcurrent1 = pcurrent1.next
+			}
+		} else {
+			if p2 == nil {
+				pcurrent2 = head
+				p2 = pcurrent2
+			} else {
+				pcurrent2.next = &node{data: head.data}
+				pcurrent2 = pcurrent2.next
+			}
+		}
+		idx++
+		head = head.next
+	}
+
+	return p1, p2
+}
+
+func listReverse(head *node) *node {
+	var pre, next *node
+	for head != nil {
+		next = head.next
+		head.next = pre
+		pre = head
+		head = next
+	}
+
+	return pre
+}
+
+func meregeList(head1, head2 *node) *node {
+	if head1 == nil && head2 == nil {
+		return nil
+	}
+	if head1 == nil {
+		return head2
+	}
+	if head2 == nil {
+		return head1
+	}
+
+	p1, p2 := head1, head2
+	var p *node
+	for p1 != nil && p2 != nil {
+		maxData := p1.data
+		if p1.data < p2.data {
+			maxData = p2.data
+			p2 = p2.next
+		} else {
+			p1 = p1.next
+		}
+		if p == nil {
+			p = &node{data: maxData}
+		} else {
+			newNode := node{data: maxData, next: p}
+			p = &newNode
+		}
+	}
+
+	for p1 != nil {
+		newNode := node{data: p1.data, next: p}
+		p = &newNode
+		p1 = p1.next
+	}
+
+	for p2 != nil {
+		newNode := node{data: p2.data, next: p}
+		p = &newNode
+		p2 = p2.next
+	}
+
+	return p
+}
+
+func SortList(head *node) *node {
+	//	根据奇偶位置拆分链表
+	p1, p2 := splitList(head)
+	//	逆置偶数位置生成的链表
+	pSorted := listReverse(p1)
+	//	合并
+	result := meregeList(p2, pSorted)
+
+	return result
+}
