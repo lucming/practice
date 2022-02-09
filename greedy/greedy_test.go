@@ -1,6 +1,9 @@
 package greedy
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func Test_findContentChildren(t *testing.T) {
 	type args struct {
@@ -304,6 +307,36 @@ func Test_eraseOverlapIntervals(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := eraseOverlapIntervals(tt.args.intervals); got != tt.want {
 				t.Errorf("eraseOverlapIntervals() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_merge(t *testing.T) {
+	type args struct {
+		nums [][]int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{[][]int{{1, 3}, {2, 6}, {8, 10}, {15, 18}}},
+			want: [][]int{{1, 6}, {8, 10}, {15, 18}},
+		},
+		{
+			name: "test2",
+			args: args{[][]int{{1, 4}, {4, 5}}},
+			want: [][]int{{1, 5}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := merge(tt.args.nums); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("merge() = %v, want %v", got, tt.want)
 			}
 		})
 	}
