@@ -376,3 +376,32 @@ func Test_monotoneIncreasingDigits(t *testing.T) {
 		})
 	}
 }
+
+func Test_maxProfitHaveFee(t *testing.T) {
+	type args struct {
+		prices []int
+		fee    int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{
+				prices: []int{1, 3, 2, 8, 11, 4, 9},
+				fee:    2,
+			},
+			want: 11,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := maxProfitHaveFee(tt.args.prices, tt.args.fee); got != tt.want {
+				t.Errorf("maxProfitHaveFee() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
