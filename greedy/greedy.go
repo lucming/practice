@@ -2,6 +2,7 @@ package greedy
 
 import (
 	"sort"
+	"strconv"
 )
 
 //分饼干问题
@@ -394,6 +395,98 @@ func eraseOverlapIntervals(intervals [][]int) int {
 		if intervals[i-1][1] > intervals[i][0] {
 			result++
 			intervals[i][1] = min(intervals[i-1][1], intervals[i][1])
+		}
+	}
+
+	return result
+}
+
+//给出一个区间的集合，请合并所有重叠的区间。
+//示例 1:
+//输入: intervals = [[1,3],[2,6],[8,10],[15,18]]
+//输出: [[1,6],[8,10],[15,18]]
+//解释: 区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+//示例 2:
+//输入: intervals = [[1,4],[4,5]]
+//输出: [[1,5]]
+//解释: 区间 [1,4] 和 [4,5] 可被视为重叠区间。
+//提示：
+//intervals[i][0] <= intervals[i][1]
+func merge(nums [][]int) [][]int {
+	sort.Slice(nums, func(i, j int) bool {
+		return nums[i][0] < nums[j][0]
+	})
+
+	result := make([][]int, 0)
+	current := nums[0]
+	for i := 1; i < len(nums); i++ {
+		if nums[i-1][1] >= nums[i][0] {
+			current[1] = max(nums[i-1][1], nums[i][1])
+		} else {
+			result = append(result, current)
+			current = nums[i]
+		}
+	}
+	result = append(result, current)
+
+	return result
+}
+
+//给定一个非负整数 N，找出小于或等于 N 的最大的整数，同时这个整数需要满足其各个位数上的数字是单调递增。
+//（当且仅当每个相邻位数上的数字 x 和 y 满足 x <= y 时，我们称这个整数是单调递增的。）
+//示例 1:
+//输入: N = 10
+//输出: 9
+//示例 2:
+//输入: N = 1234
+//输出: 1234
+//示例 3:
+//输入: N = 332
+//输出: 299
+//说明: N 是在 [0, 10^9] 范围内的一个整数。
+func monotoneIncreasingDigits(num int) int {
+	stringNum := strconv.Itoa(num)
+	byteNum := []byte(stringNum)
+	if len(byteNum) <= 1 {
+		return num
+	}
+
+	for i := len(byteNum) - 1; i > 0; i-- {
+		if byteNum[i] < byteNum[i-1] {
+			byteNum[i-1]--
+			for j := i; j < len(byteNum); j++ {
+				byteNum[j] = '9'
+			}
+		}
+	}
+
+	result, _ := strconv.Atoi(string(byteNum))
+	return result
+}
+
+//给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；非负整数 fee 代表了交易股票的手续费用。
+//你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
+//返回获得利润的最大值。
+//注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
+//示例 1: 输入: prices = [1, 3, 2, 8, 10, 4, 9], fee = 2 输出: 8
+//解释: 能够达到的最大利润: 在此处买入 prices[0] = 1 在此处卖出 prices[3] = 8 在此处买入 prices[4] = 4 在此处卖出 prices[5] = 9 总利润: ((8 - 1) - 2) + ((9 - 4) - 2) = 8.
+func maxProfitHaveFee(prices []int, fee int) int {
+	result := 0
+	minPrice := prices[0]
+	for i := 1; i < len(prices); i++ {
+		//买入
+		if minPrice > prices[i] {
+			minPrice = prices[i]
+		}
+		//未获利，不操作
+		if prices[i] >= minPrice && prices[i] <= minPrice+fee {
+			continue
+		}
+
+		//这边有两层意思：1.获利；2.当前值>前一个节点的值
+		if prices[i] > minPrice+fee {
+			result += prices[i] - minPrice - fee
+			minPrice = prices[i] - fee //已经获利，但是不应该这个时候卖掉，所以最后的获利应该加上递增的这一段的差值
 		}
 	}
 
