@@ -317,3 +317,49 @@ func SortList(head *node) *node {
 
 	return result
 }
+
+//链表排序 归并实现
+//具体思路如下：
+//1.使用快慢指针，找到链表的中点。
+//2.对链表的前半部分和后半部分分别排序。
+//3.将两部分合并。
+func mergeSort(head *node) *node {
+	if head == nil || head.next == nil {
+		return head
+	}
+	slow, fast := head, head.next
+	for fast != nil && fast.next != nil {
+		slow = slow.next
+		fast = fast.next.next
+	}
+
+	second := mergeSort(slow.next)
+	slow.next = nil
+	first := mergeSort(head)
+
+	return mergeTwoList(first, second)
+}
+
+func mergeTwoList(head1, head2 *node) *node {
+	phead := &node{data: 0}
+	p := phead
+
+	for head1 != nil && head2 != nil {
+		if head1.data < head2.data {
+			p.next = head1
+			head1 = head1.next
+		} else {
+			p.next = head2
+			head2 = head2.next
+		}
+		p = p.next
+	}
+	if head1 == nil {
+		p.next = head2
+	}
+	if head2 == nil {
+		p.next = head1
+	}
+
+	return phead.next
+}
