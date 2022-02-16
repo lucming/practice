@@ -169,3 +169,34 @@ func Test_integerBreak(t *testing.T) {
 		})
 	}
 }
+
+func Test_bagProblem01(t *testing.T) {
+	type args struct {
+		weight    []int
+		value     []int
+		bagweight int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{
+				weight:    []int{1, 3, 4},
+				value:     []int{15, 20, 30},
+				bagweight: 4,
+			},
+			want: 35,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := bagProblem01(tt.args.weight, tt.args.value, tt.args.bagweight); got != tt.want {
+				t.Errorf("bagProblem01() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

@@ -105,3 +105,28 @@ func integerBreak(n int) int {
 
 	return dp[n]
 }
+
+//有n件物品和一个最多能背重量为w 的背包。
+//第i件物品的重量是weight[i]，得到的价值是value[i] 。
+//每件物品只能用一次，求解将哪些物品装入背包里物品价值总和最大。
+func bagProblem01(weight, value []int, bagweight int) int {
+	dp := make([][]int, len(weight))
+	for i := 0; i < len(dp); i++ {
+		dp[i] = make([]int, bagweight+1)
+	}
+
+	//初始化
+	//d[0][j] 在下标为0的物品中选择，放进容量为j的背包，价值的最大值
+	for j := weight[0]; j <= bagweight; j++ {
+		dp[0][j] += value[0]
+	}
+
+	for i := 1; i < len(weight); i++ {
+		for j := weight[i]; j <= bagweight; j++ {
+			//dp[i][j] 表示从下标为[0-i]的物品里任意取，放进容量为j的背包，价值总和最大是多少。
+			dp[i][j] = tools.Max(dp[i-1][j], dp[i-1][j-weight[i]]+value[i])
+		}
+	}
+
+	return dp[len(weight)-1][bagweight]
+}
