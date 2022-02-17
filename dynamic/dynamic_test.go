@@ -200,3 +200,64 @@ func Test_bagProblem01(t *testing.T) {
 		})
 	}
 }
+
+func Test_bagProblem(t *testing.T) {
+	type args struct {
+		weight    []int
+		value     []int
+		bagweight int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{
+				weight:    []int{1, 3, 4},
+				value:     []int{15, 20, 30},
+				bagweight: 4,
+			},
+			want: 35,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := bagProblem(tt.args.weight, tt.args.value, tt.args.bagweight); got != tt.want {
+				t.Errorf("bagProblem() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_canPartition(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{[]int{1, 5, 11, 5}},
+			want: true,
+		},
+		{
+			name: "test2",
+			args: args{[]int{1, 2, 3, 5}},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := canPartition(tt.args.nums); got != tt.want {
+				t.Errorf("canPartition() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
