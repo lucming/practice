@@ -233,3 +233,39 @@ func change(amount int, coins []int) int {
 
 	return dp[amount]
 }
+
+//给定一个由正整数组成且不存在重复数字的数组，找出和为给定目标正整数的组合的个数。
+//示例:
+//nums = [1, 2, 3] target = 4
+//所有可能的组合为： (1, 1, 1, 1) (1, 1, 2) (1, 2, 1) (1, 3) (2, 1, 1) (2, 2) (3, 1)
+//因此输出为 7。
+func combinationSum4(nums []int, target int) int {
+	dp := make([]int, target+1)
+	dp[0] = 1
+
+	for j := 0; j <= target; j++ {
+		for i := 0; i < len(nums); i++ {
+			if j >= nums[i] {
+				dp[j] += dp[j-nums[i]]
+			}
+		}
+	}
+
+	return dp[target]
+}
+
+//爬楼梯
+func claimstairs(n int) int {
+	dp := make([]int, n+1)
+	dp[0] = 1
+
+	for j := 1; j <= n; j++ { //遍历背包
+		for i := 1; i <= 2; i++ { //遍历物品
+			if j >= i {
+				dp[j] += dp[j-i]
+			}
+		}
+	}
+
+	return dp[n]
+}
