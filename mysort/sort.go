@@ -125,3 +125,67 @@ func quickSort(arr []int, start int, end int) {
 		quickSort(arr, i+1, end)
 	}
 }
+
+//堆排 调整堆，使的满足大根堆
+func adjustHeap(a []int, pos int, lenght int) {
+	for {
+		child := pos*2 + 1    //左孩子的位置
+		if child > lenght-1 { //没有左孩子了，说明pos已经是叶子节点
+			break
+		}
+		//找到左右子孩子中较大的一个，可能会存在没有右孩子的情况，
+		//如果要有右孩子，那么左孩子最大的下标使len(a)-2
+		if child <= lenght-2 && a[child+1] > a[child] {
+			child++
+		}
+		//已经满足大根堆，结束循环
+		if a[pos] >= a[child] {
+			break
+		}
+		//parent节点<左右子孩子中较大节点的值，交换parent节点和左右子孩子中较大的孩子的value
+		//交换完了，需要继续使子孩子满足大根堆
+		a[pos], a[child] = a[child], a[pos]
+		pos = child
+	}
+}
+
+func adjustHeap1(a []int, pos int, lenght int) {
+	for {
+		lChild := pos*2 + 1 //左孩子的位置
+		maxChild := lChild
+		if lChild > lenght-1 { //没有左孩子了，说明pos已经是叶子节点
+			break
+		}
+		//找到左右子孩子中较大的一个，可能会存在没有右孩子的情况，
+		//如果要有右孩子，那么右孩子最大的下标使len(a)-1
+		if rChild := lChild + 1; rChild <= lenght-1 && a[rChild] > a[lChild] {
+			maxChild = rChild
+		}
+
+		//已经满足大根堆，结束循环
+		if a[pos] >= a[maxChild] {
+			break
+		}
+		//parent节点<左右子孩子中较大节点的值，交换parent节点和左右子孩子中较大的孩子的value
+		//交换完了，需要继续使子孩子满足大根堆
+		a[pos], a[maxChild] = a[maxChild], a[pos]
+		pos = maxChild
+	}
+}
+
+func buildHeap(a []int) {
+	// 从底层向上层构建，len(a)/2-1是第一个非叶子
+	for i := len(a)/2 - 1; i >= 0; i-- {
+		adjustHeap1(a, i, len(a))
+	}
+}
+
+func heapSort(a []int) {
+	buildHeap(a)
+
+	for i := len(a) - 1; i >= 0; i-- {
+		a[0], a[i] = a[i], a[0]
+		adjustHeap1(a, 0, i)
+	}
+
+}
