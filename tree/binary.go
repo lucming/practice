@@ -617,3 +617,49 @@ func ArrayToTree(arr []int) *node {
 	root.Right = ArrayToTree(arr[len(arr)/2+1:])
 	return root
 }
+
+//之字打印二叉树
+func LevelOrder(root *node) [][]int {
+	var res [][]int
+	if root == nil {
+		return res
+	}
+	var nodesA []*node
+	var nodesB []*node
+	nodesA = append(nodesA, root)
+	for len(nodesA) != 0 || len(nodesB) != 0 {
+		var tmp []int
+		//遍历A这一层的子节点以及保存A层节点值，此时需要顺序保存val
+		for i := 0; i < len(nodesA); i++ {
+			tmp = append(tmp, nodesA[i].Val)
+			if nodesA[i].Left != nil {
+				nodesB = append(nodesB, nodesA[i].Left)
+			}
+			if nodesA[i].Right != nil {
+				nodesB = append(nodesB, nodesA[i].Right)
+			}
+		}
+		// 此时A层遍历结束
+		if len(tmp) != 0 {
+			nodesA = nil
+			res = append(res, tmp)
+			tmp = nil
+		}
+		//遍历B这一层的子节点以及保存B层节点值，此时需要逆序保存val
+		for i := 0; i < len(nodesB); i++ {
+			tmp = append([]int{nodesB[i].Val}, tmp...)
+			if nodesB[i].Left != nil {
+				nodesA = append(nodesA, nodesB[i].Left)
+			}
+			if nodesB[i].Right != nil {
+				nodesA = append(nodesA, nodesB[i].Right)
+			}
+		}
+		// 此时B层遍历结束
+		if len(tmp) != 0 {
+			nodesB = nil
+			res = append(res, tmp)
+		}
+	}
+	return res
+}
