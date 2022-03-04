@@ -422,3 +422,36 @@ func maxProfit3(prices []int) int {
 
 	return dp[1]
 }
+
+//给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+//子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
+//示例 1： 输入：nums = [10,9,2,5,3,7,101,18] 输出：4 解释：最长递增子序列是 [2,3,7,101]，因此长度为 4 。
+//示例 2： 输入：nums = [0,1,0,3,2,3] 输出：4
+//示例 3： 输入：nums = [7,7,7,7,7,7,7] 输出：1
+
+//思路：dp数组每个val可以先初始化为1,开始遍历，
+//内层循环逻辑：如果当前val>前面遍历过的某个值，说明当前值可以和前面的值组成递增子数组，dp[i]=dp[j]+1
+func lengthOfLIS(nums []int) int {
+	if len(nums) <= 1 {
+		return len(nums)
+	}
+
+	dp := make([]int, len(nums))
+	for i := 0; i < len(nums); i++ {
+		dp[i] = 1
+	}
+
+	result := 0
+	for i := 1; i < len(nums); i++ {
+		for j := 0; j < i; j++ {
+			if nums[i] > nums[j] {
+				dp[i] = tools.Max(dp[i], dp[j]+1)
+			}
+		}
+		if result < dp[i] {
+			result = dp[i]
+		}
+	}
+
+	return result
+}
