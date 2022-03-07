@@ -485,3 +485,31 @@ func findLengthOfLCIS(nums []int) int {
 
 	return maxLength
 }
+
+//最长重复子数组长度
+//给两个整数数组 A 和 B ，返回两个数组中公共的、长度最长的子数组的长度。
+//示例：
+//输入： A: [1,2,3,2,1] B: [3,2,1,4,7] 输出：3 解释： 长度最长的公共子数组是 [3, 2, 1] 。
+func findLength(A, B []int) int {
+	if len(A) == 0 || len(B) == 0 {
+		return 0
+	}
+
+	dp := make([][]int, len(A)+1)
+	for i := 0; i < len(A)+1; i++ {
+		dp[i] = make([]int, len(B)+1)
+	}
+	maxLength := 0
+	for i := 1; i <= len(A); i++ {
+		for j := 1; j <= len(B); j++ {
+			if A[i-1] == B[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			}
+			if maxLength < dp[i][j] {
+				maxLength = dp[i][j]
+			}
+		}
+	}
+
+	return maxLength
+}
