@@ -529,3 +529,107 @@ func Test_lengthOfLIS(t *testing.T) {
 		})
 	}
 }
+
+func Test_findLengthOfLCIS(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{[]int{1, 3, 5, 4, 7}},
+			want: 3,
+		},
+		{
+			name: "test2",
+			args: args{[]int{2, 2, 2, 2, 2}},
+			want: 1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := findLengthOfLCIS(tt.args.nums); got != tt.want {
+				t.Errorf("findLengthOfLCIS() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_findLength(t *testing.T) {
+	type args struct {
+		A []int
+		B []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{
+				A: []int{1, 2, 3, 2, 1},
+				B: []int{3, 2, 1, 4, 7},
+			},
+			want: 3,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := findLength1(tt.args.A, tt.args.B); got != tt.want {
+				t.Errorf("findLength() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_longestCommonSubsequence(t *testing.T) {
+	type args struct {
+		text1 string
+		text2 string
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{
+				text1: "abcde",
+				text2: "ace",
+			},
+			want: 3,
+		},
+		{
+			name: "test2",
+			args: args{
+				text1: "ace",
+				text2: "ace",
+			},
+			want: 3,
+		},
+		{
+			name: "test3",
+			args: args{
+				text1: "abc",
+				text2: "def",
+			},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := longestCommonSubsequence(tt.args.text1, tt.args.text2); got != tt.want {
+				t.Errorf("longestCommonSubsequence() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
