@@ -513,3 +513,20 @@ func findLength(A, B []int) int {
 
 	return maxLength
 }
+
+func findLength1(A, B []int) int {
+	dp := make([]int, len(B)+1)
+	maxLength := 0
+	for i := 1; i <= len(A); i++ {
+		for j := 1; j <= len(B); j++ {
+			if A[i-1] == B[j-1] {
+				dp[j] = dp[j-1] + 1
+			}
+			if maxLength < dp[j] {
+				maxLength = dp[j]
+			}
+		}
+	}
+
+	return maxLength
+}
