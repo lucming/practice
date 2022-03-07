@@ -431,6 +431,7 @@ func maxProfit3(prices []int) int {
 
 //思路：dp数组每个val可以先初始化为1,开始遍历，
 //内层循环逻辑：如果当前val>前面遍历过的某个值，说明当前值可以和前面的值组成递增子数组，dp[i]=dp[j]+1
+//其实就是找前面比当前值小的最长序列，当前最长就是前面最长+1
 func lengthOfLIS(nums []int) int {
 	if len(nums) <= 1 {
 		return len(nums)
@@ -454,4 +455,33 @@ func lengthOfLIS(nums []int) int {
 	}
 
 	return result
+}
+
+//最长连续子数组
+//给定一个未经排序的整数数组，找到最长且 连续递增的子序列，并返回该序列的长度。
+//连续递增的子序列 可以由两个下标 l 和 r（l < r）确定，如果对于每个 l <= i < r，都有 nums[i] < nums[i + 1] ，那么子序列 [nums[l], nums[l + 1], ..., nums[r - 1], nums[r]] 就是连续递增子序列。
+//示例 1： 输入：nums = [1,3,5,4,7] 输出：3 解释：最长连续递增序列是 [1,3,5], 长度为3。 尽管 [1,3,5,7] 也是升序的子序列, 但它不是连续的，因为 5 和 7 在原数组里被 4 隔开。
+//示例 2： 输入：nums = [2,2,2,2,2] 输出：1 解释：最长连续递增序列是 [2], 长度为1。
+// if nums[i]>nums[i-1] dp[i]=dp[i-1]+1
+func findLengthOfLCIS(nums []int) int {
+	if len(nums) <= 1 {
+		return len(nums)
+	}
+
+	dp := make([]int, len(nums))
+	dp[0] = 1
+	maxLength := 0
+
+	for i := 1; i < len(nums); i++ {
+		if nums[i] > nums[i-1] {
+			dp[i] = dp[i-1] + 1
+		} else {
+			dp[i] = 1
+		}
+		if dp[i] > maxLength {
+			maxLength = dp[i]
+		}
+	}
+
+	return maxLength
 }
