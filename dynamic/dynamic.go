@@ -610,3 +610,27 @@ func isSubsequence(s, t string) bool {
 
 	return dp[len(s)][len(t)] == len(s)
 }
+
+//不同的子序列
+//给定一个字符串 s 和一个字符串 t ，计算在 s 的子序列中 t 出现的个数。
+func numDistinct(s, t string) int {
+	dp := make([][]int, len(s)+1)
+	for i := 0; i < len(dp); i++ {
+		dp[i] = make([]int, len(t)+1)
+	}
+	for i := 0; i < len(dp); i++ {
+		dp[i][0] = 1
+	}
+
+	for i := 1; i <= len(s); i++ {
+		for j := 1; j <= len(t); j++ {
+			if s[i-1] == t[j-1] {
+				dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+			} else {
+				dp[i][j] = dp[i-1][j]
+			}
+		}
+	}
+
+	return dp[len(s)][len(t)]
+}
