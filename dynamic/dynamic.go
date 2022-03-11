@@ -664,3 +664,82 @@ func minDistance(word1, word2 string) int {
 
 	return dp[len(dp)-1][len(dp[0])-1]
 }
+
+//最长回文子串
+//给你一个字符串 s，找到 s 中最长的回文子串。
+//示例 1：
+//输入：s = "babad"
+//输出："bab"
+//解释："aba" 同样是符合题意的答案。
+//示例 2：
+//输入：s = "cbbd"
+//输出："bb"
+func longestPalindrome(s string) string {
+	l := len(s)
+	if l < 2 {
+		return s
+	}
+
+	r := make([][]bool, l)
+	for i := 0; i < l; i++ {
+		r[i] = make([]bool, l)
+	}
+
+	ml, si := 1, 0
+	// 字串长度 sl = j - i + 1
+	for sl := 2; sl <= l; sl++ {
+		// 左边界 i
+		for i := 0; i < l; i++ {
+			// 右边界 j - i + 1 = sl
+			j := i + sl - 1
+			if j >= l {
+				break
+			}
+			if s[i] != s[j] {
+				r[i][j] = false
+			} else {
+				if sl <= 3 {
+					r[i][j] = true
+				} else {
+					r[i][j] = r[i+1][j-1]
+				}
+			}
+
+			if r[i][j] && sl > ml {
+				ml = sl
+				si = i
+			}
+		}
+	}
+	return s[si : si+ml]
+}
+
+//中心扩展
+func longestPalindrome1(s string) string {
+	if s == "" {
+		return ""
+	}
+	start, end := 0, 0
+	for i := 0; i < len(s); i++ {
+		left1, right1 := expandArroundCenter(s, i, i)
+		left2, right2 := expandArroundCenter(s, i, i+1)
+
+		if right1-left1 > end-start {
+			start, end = left1, right1
+		}
+		if right2-left2 > end-start {
+			start, end = left2, right2
+		}
+	}
+
+	return s[start : end+1]
+}
+
+func expandArroundCenter(s string, left, right int) (int, int) {
+	for left >= 0 && right < len(s) && s[left] == s[right] {
+		left--
+		right++
+	}
+
+	return left + 1, right - 1
+}
