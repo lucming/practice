@@ -675,46 +675,57 @@ func minDistance(word1, word2 string) int {
 //输入：s = "cbbd"
 //输出："bb"
 func longestPalindrome(s string) string {
-	l := len(s)
-	if l < 2 {
+	lenS := len(s)
+	if lenS < 2 {
 		return s
 	}
 
-	r := make([][]bool, l)
-	for i := 0; i < l; i++ {
-		r[i] = make([]bool, l)
+	dp := make([][]bool, lenS)
+	for i := 0; i < lenS; i++ {
+		dp[i] = make([]bool, lenS)
 	}
 
-	ml, si := 1, 0
-	// 字串长度 sl = j - i + 1
-	for sl := 2; sl <= l; sl++ {
-		// 左边界 i
-		for i := 0; i < l; i++ {
-			// 右边界 j - i + 1 = sl
-			j := i + sl - 1
-			if j >= l {
+	for i := 0; i < lenS; i++ {
+		for j := 0; j < lenS; j++ {
+			dp[i][j] = true
+		}
+	}
+
+	//记录回文子串开始结束的位置，后面如果有更大的回文子串，就一直更新这俩值即可
+	maxLen := 1
+	begin := 0
+	//找最大跨度的自序
+	for steps := 2; steps <= lenS; steps++ {
+		for i := 0; i < lenS; i++ {
+			j := i + steps - 1
+			if j >= lenS {
 				break
 			}
-			if s[i] != s[j] {
-				r[i][j] = false
-			} else {
-				if sl <= 3 {
-					r[i][j] = true
+			if s[i] == s[j] {
+				if j-i < 3 {
+					//只有两个数，首尾还相同，那么就是回文
+					dp[i][j] = true
 				} else {
-					r[i][j] = r[i+1][j-1]
+					//目前的跨度超过三，首尾是相同的，那么如果子串（i+1,j-1）是回文，当前就是回文
+					dp[i][j] = dp[i+1][j-1]
 				}
+			} else {
+				//首尾不相同，那么i-j肯定不是回文了
+				dp[i][j] = false
 			}
 
-			if r[i][j] && sl > ml {
-				ml = sl
-				si = i
+			if dp[i][j] && steps > maxLen {
+				begin = i
+				maxLen = steps
 			}
 		}
 	}
-	return s[si : si+ml]
+
+	return s[begin : begin+maxLen]
 }
 
 //中心扩展
+//主要思路：选一个点，然后从这里开始扩展，如果首尾相同，就是回文，记录开始结束位置
 func longestPalindrome1(s string) string {
 	if s == "" {
 		return ""
