@@ -754,3 +754,45 @@ func expandArroundCenter(s string, left, right int) (int, int) {
 
 	return left + 1, right - 1
 }
+
+// i==j,dp[i][j]=dp[i+1][j-1]
+// i!=j,dp[i][j]=false
+//遍历顺序：下->上 左->右
+func countSubstrings(s string) int {
+	dp := make([][]bool, len(s))
+	for i := 0; i < len(s); i++ {
+		dp[i] = make([]bool, len(s))
+	}
+	result := 0
+
+	for i := len(s) - 1; i >= 0; i-- {
+		for j := i; j < len(s); j++ {
+			if s[i] == s[j] && (j-i <= 1 || dp[i+1][j-1]) {
+				result++
+				dp[i][j] = true
+			}
+		}
+	}
+
+	return result
+}
+
+func countSubstrings1(s string) int {
+	result := 0
+	for i := 0; i < len(s); i++ {
+		result += expand(s, i, i)   //以i为中心
+		result += expand(s, i, i+1) //以i和i+1为中心
+	}
+
+	return result
+}
+
+func expand(s string, start, end int) int {
+	result := 0
+	for start >= 0 && end < len(s) && s[start] == s[end] {
+		start--
+		end++
+		result++
+	}
+	return result
+}
