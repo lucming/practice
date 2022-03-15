@@ -803,3 +803,33 @@ func expand(s string, start, end int) int {
 	}
 	return result
 }
+
+//给定一个字符串 s ，找到其中最长的回文子序列，并返回该序列的长度。可以假设 s 的最大长度为 1000 。
+//示例 1: 输入: "bbbab" 输出: 4 一个可能的最长回文子序列为 "bbbb"。
+//示例 2: 输入:"cbbd" 输出: 2 一个可能的最长回文子序列为 "bb"。
+//s[i]==s[j]; dp[i][j]=dp[i+1][j-1]+2
+//s[i]!=s[j]; dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])
+//从这个规律可以发现，dp[i][j]是从dp[i+1][j-1],dp[i+1][j]推出来的，所以dp[i+1]要先算出来
+//所以一定要从下往上遍历，才能保证下一行数据是先被算出来的
+func longestPalindromeSubseq(s string) int {
+	dp := make([][]int, len(s))
+	for i := 0; i < len(s); i++ {
+		dp[i] = make([]int, len(s))
+	}
+
+	for i := 0; i < len(s); i++ {
+		dp[i][i] = 1
+	}
+
+	for i := len(s) - 1; i >= 0; i-- {
+		for j := i + 1; j < len(s); j++ {
+			if s[i] == s[j] {
+				dp[i][j] = dp[i+1][j-1] + 2
+			} else {
+				dp[i][j] = tools.Max(dp[i][j-1], dp[i+1][j])
+			}
+		}
+	}
+
+	return dp[0][len(s)-1]
+}
