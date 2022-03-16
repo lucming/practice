@@ -148,3 +148,28 @@ func Test_topKFrequent(t *testing.T) {
 		})
 	}
 }
+
+func Test_dailyTemperatures(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want []int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{[]int{73, 74, 75, 71, 69, 72, 76, 73}},
+			want: []int{1, 1, 4, 2, 1, 1, 0, 0},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := dailyTemperatures(tt.args.nums); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("dailyTemperatures() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
