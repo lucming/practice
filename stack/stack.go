@@ -1,6 +1,9 @@
 package stack
 
-import "sort"
+import (
+	"github.com/lucming/practice/tools"
+	"sort"
+)
 
 type stack struct {
 	queue1 []int
@@ -171,4 +174,102 @@ func nextGreaterElements(nums []int) []int {
 	}
 
 	return result
+}
+
+//接雨水
+//双指针,求出每列积水的高度相加即可，当前列的积水=min(左侧柱子最高高度,右侧柱子最高高度)-当前柱子的高度
+//注意：第一个柱子和最后一个注意不可以盛水
+func trap(height []int) int {
+	sum := 0
+	for i := 1; i < len(height)-1; i++ {
+		lHigh, rHigh := height[i], height[i]
+		for j := i + 1; j < len(height); j++ {
+			if rHigh < height[j] {
+				rHigh = height[j]
+			}
+		}
+		for j := 0; j < i; j++ {
+			if lHigh < height[j] {
+				lHigh = height[j]
+			}
+		}
+
+		sum += tools.Min(lHigh, rHigh) - height[i]
+	}
+
+	return sum
+}
+
+//动态规划
+//前面的双指针解法，在计算每列的积水的时候，都需要重新计算左右柱子的最高高度，存在重复，故可以提前把这个告诉算出来，降低时间复杂度
+func trap1(height []int) int {
+	lHigh := make([]int, len(height))
+	rHigh := make([]int, len(height))
+	lHigh[0] = height[0]
+	for i := 1; i < len(height); i++ {
+		lHigh[i] = tools.Max(height[i], lHigh[i-1])
+	}
+	rHigh[len(height)-1] = height[len(height)-1]
+	for i := len(height) - 2; i >= 0; i-- {
+		rHigh[i] = tools.Max(rHigh[i+1], height[i])
+	}
+
+	sum := 0
+	for i := 1; i < len(height)-1; i++ {
+		sum += tools.Min(lHigh[i], rHigh[i]) - height[i]
+	}
+
+	return sum
+}
+
+//单调栈
+func trap2(height []int) int {
+	stack := []int{0}
+	sum := 0
+
+	for i := 1; i < len(height); i++ {
+		if height[i] < height[stack[len(stack)-1]] {
+			stack = append(stack, i)
+		} else if height[i] == height[stack[len(stack)-1]] {
+			stack = stack[:len(stack)-1]
+			stack = append(stack, i)
+		} else {
+			for len(stack) > 0 && height[i] > height[stack[len(stack)-1]] {
+				top := stack[len(stack)-1]
+				stack = stack[:len(stack)-1]
+				if len(stack) > 0 {
+					l := stack[len(stack)-1]
+					h := tools.Min(height[i], height[l]) - height[top]
+					w := i - l - 1
+					sum += h * w
+				}
+			}
+			stack = append(stack, i)
+		}
+	}
+
+	return sum
+}
+
+//简化
+func trap3(height []int) int {
+	stack := []int{0}
+	sum := 0
+
+	for i := 1; i < len(height); i++ {
+		for len(stack) > 0 && height[i] > height[stack[len(stack)-1]] {
+			top := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if len(stack) > 0 {
+				l := stack[len(stack)-1]
+				h := tools.Min(height[i], height[l]) - height[top]
+				w := i - l - 1
+				sum += h * w
+			}
+		}
+		stack = append(stack, i)
+
+	}
+
+	return sum
 }
