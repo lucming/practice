@@ -273,3 +273,119 @@ func trap3(height []int) int {
 
 	return sum
 }
+
+//给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+//求在该柱状图中，能够勾勒出来的矩形的最大面积。
+//eg1:
+//	input:[2,1,5,6,2,3]
+//	output: 10
+//eg2:
+//	input: [2,4]
+//	output: 4
+//双指针
+//每次需要找到左边第一个比当前值小的下标和右边第一个比当前值小的下标
+func largestRectangleArea(height []int) int {
+	maxArea := 0
+	for i := 0; i < len(height); i++ {
+		l, r := i, i
+		for ; l >= 0; l-- {
+			if height[l] < height[i] {
+				break
+			}
+		}
+		for ; r < len(height); r++ {
+			if height[r] < height[i] {
+				break
+			}
+		}
+		w := r - l - 1
+		h := height[i]
+		maxArea = tools.Max(maxArea, h*w)
+	}
+
+	return maxArea
+}
+
+//动态规划
+//注意：这里需要提前算好每个值，左边第一个比自己小的元素下标，以及右边第一个比自己小的元素下标，下标，注意是下标
+func largestRectangleArea1(height []int) int {
+	maxArea := 0
+	minLeft := make([]int, len(height))
+	minRight := make([]int, len(height))
+
+	minLeft[0] = -1
+	for i := 1; i < len(height); i++ {
+		t := i - 1
+		for t >= 0 && height[t] >= height[i] {
+			t = minLeft[t]
+		}
+		minLeft[i] = t
+	}
+
+	minRight[len(height)-1] = len(height)
+	for i := len(height) - 2; i >= 0; i-- {
+		t := i + 1
+		for t < len(height) && height[t] >= height[i] {
+			t = minRight[t]
+		}
+		minRight[i] = t
+	}
+
+	for i := 0; i < len(height); i++ {
+		maxArea = tools.Max(maxArea, (minRight[i]-minLeft[i]-1)*height[i])
+	}
+
+	return maxArea
+}
+
+//单调栈
+//这里是要找比当前value小的左右下标，所以和接雨水的问题刚好相反
+func largestRectangleArea2(height []int) int {
+	maxArea := 0
+	stack := []int{0}
+	height = append([]int{0}, height...)
+	height = append(height, 0)
+
+	for i := 1; i < len(height); i++ {
+		if height[i] > height[stack[len(stack)-1]] {
+			stack = append(stack, i)
+		} else if height[i] == height[stack[len(stack)-1]] {
+			stack = stack[:len(stack)-1]
+			stack = append(stack, i)
+		} else {
+			for len(stack) > 0 && height[i] < height[stack[len(stack)-1]] {
+				mid := stack[len(stack)-1]
+				stack = stack[:len(stack)-1]
+				left := stack[len(stack)-1]
+				w := i - left - 1
+				h := height[mid]
+				maxArea = tools.Max(maxArea, h*w)
+			}
+			stack = append(stack, i)
+		}
+	}
+
+	return maxArea
+}
+
+//简化
+func largestRectangleArea3(height []int) int {
+	maxArea := 0
+	stack := []int{0}
+	height = append([]int{0}, height...)
+	height = append(height, 0)
+
+	for i := 1; i < len(height); i++ {
+		for len(stack) > 0 && height[i] < height[stack[len(stack)-1]] {
+			mid := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			left := stack[len(stack)-1]
+			w := i - left - 1
+			h := height[mid]
+			maxArea = tools.Max(maxArea, h*w)
+		}
+		stack = append(stack, i)
+	}
+
+	return maxArea
+}
