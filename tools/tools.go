@@ -21,3 +21,14 @@ func Sum(nums []int) int {
 	}
 	return sum
 }
+
+func MaxValue(nums []int) int {
+	result := nums[0]
+	for i := 1; i < len(nums); i++ {
+		if result < nums[i] {
+			result = nums[i]
+		}
+	}
+
+	return result
+}
