@@ -108,3 +108,17 @@ func canFinish1(weights []int, days, cap int) bool {
 
 	return false
 }
+
+//判断子序列
+func isSubsequence(s, t string) bool {
+	lenS, lenT := len(s), len(t)
+	i, j := 0, 0
+	for i < lenS && j < lenT {
+		if s[i] == t[j] {
+			i++
+		}
+		j++
+	}
+
+	return i == lenS
+}
