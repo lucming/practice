@@ -32,3 +32,11 @@ func MaxValue(nums []int) int {
 
 	return result
 }
+
+func Abs(val int) int {
+	if val < 0 {
+		val = -val
+	}
+
+	return val
+}
