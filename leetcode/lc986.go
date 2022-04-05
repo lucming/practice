@@ -2,6 +2,7 @@ package leetcode
 
 import "github.com/lucming/practice/tools"
 
+//求区间交集
 func intervalIntersection(a, b [][]int) [][]int {
 	result := make([][]int, 0)
 	for i, j := 0, 0; i < len(a) && j < len(b); {
