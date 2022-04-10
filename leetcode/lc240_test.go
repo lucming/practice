@@ -43,3 +43,43 @@ func Test_searchMatrix(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxNumByDel3(t *testing.T) {
+	type args struct {
+		num int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "test1",
+			args: args{13938},
+			want: 1938,
+		},
+		{
+			name: "test2",
+			args: args{19873},
+			want: 1987,
+		},
+		{
+			name: "test3",
+			args: args{-13938},
+			want: -1398,
+		},
+		{
+			name: "test4",
+			args: args{-19383},
+			want: -1938,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := MaxNumByDel3(tt.args.num); got != tt.want {
+				t.Errorf("MaxNumByDel3() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
