@@ -8,8 +8,12 @@ func search(nums []int, target int) int {
 		if nums[mid] == target {
 			return mid
 		}
-		if nums[0] <= nums[mid] {
-			if nums[0] <= target && target < nums[mid] {
+		if nums[left] == nums[mid] && nums[mid] == nums[right] {
+			left++
+			right--
+		}
+		if nums[left] <= nums[mid] {
+			if nums[left] <= target && target < nums[mid] {
 				right = mid - 1
 			} else {
 				left = mid + 1
