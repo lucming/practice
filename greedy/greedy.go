@@ -420,8 +420,8 @@ func merge(nums [][]int) [][]int {
 	result := make([][]int, 0)
 	current := nums[0]
 	for i := 1; i < len(nums); i++ {
-		if nums[i-1][1] >= nums[i][0] {
-			current[1] = max(nums[i-1][1], nums[i][1])
+		if current[1] >= nums[i][0] {
+			current[1] = max(current[1], nums[i][1])
 		} else {
 			result = append(result, current)
 			current = nums[i]
