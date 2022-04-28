@@ -152,6 +152,11 @@ func Test_canJump(t *testing.T) {
 			args: args{[]int{3, 2, 1, 0, 4}},
 			want: false,
 		},
+		{
+			name: "test3",
+			args: args{[]int{0}},
+			want: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
