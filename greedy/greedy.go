@@ -204,7 +204,7 @@ func canJump(nums []int) bool {
 	cover := 0
 	for i := 0; i <= cover; i++ {
 		cover = max(nums[i]+i, cover)
-		if cover >= len(nums) {
+		if cover >= len(nums)-1 {
 			return true
 		}
 	}
